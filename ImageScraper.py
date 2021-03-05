@@ -4,9 +4,9 @@ import requests
 from selenium import webdriver
 
 
-def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_between_interactions: int = 1):
+def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_between_interactions: int = 1): #sleep_between_interactions will give sufficient time to process the images.
     def scroll_to_end(wd):
-        wd.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        wd.execute_script("window.scrollTo(0, document.body.scrollHeight);")   #This will help in scrolling down the entire page
         time.sleep(sleep_between_interactions)
 
         # build the google query
@@ -14,13 +14,13 @@ def fetch_image_urls(query: str, max_links_to_fetch: int, wd: webdriver, sleep_b
     search_url = "https://www.google.com/search?safe=off&site=&tbm=isch&source=hp&q={q}&oq={q}&gs_l=img"
 
     # load the page
-    wd.get(search_url.format(q=query))
+    wd.get(search_url.format(q=query)) #It will load the image page with the required query we give
 
-    image_urls = set()
+    image_urls = set()  #This will collect the unique image urls.
     image_count = 0
     results_start = 0
     while image_count < max_links_to_fetch:
-        scroll_to_end(wd)
+        scroll_to_end(wd)   #If we search for large amount of images this function call helps us to scroll down with the help of chrom driver we installed.
 
         # get all image thumbnail results
         thumbnail_results = wd.find_elements_by_css_selector("img.Q4LuWd")
